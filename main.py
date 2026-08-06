@@ -166,6 +166,36 @@ def show_by_category():
     print(f"\n총 {len(filtered_prompts)}개의 프롬프트")
 
 
+def search_prompt():
+    """제목 또는 내용에 검색어가 포함된 프롬프트를 출력한다."""
+    print("\n=== 프롬프트 검색 ===")
+
+    keyword = get_non_empty_input("검색어: ")
+    normalized_keyword = keyword.lower()
+
+    search_results = [
+        prompt
+        for prompt in prompts
+        if normalized_keyword in prompt["title"].lower()
+        or normalized_keyword in prompt["content"].lower()
+    ]
+
+    print("\n검색 결과:")
+
+    if not search_results:
+        print(f"'{keyword}'에 해당하는 프롬프트가 없습니다.")
+        return
+
+    for index, prompt in enumerate(search_results, start=1):
+        favorite_mark = " ⭐" if prompt["favorite"] else ""
+        print(
+            f"{index}. [{prompt['category']}] "
+            f"{prompt['title']}{favorite_mark}"
+        )
+
+    print(f"\n총 {len(search_results)}개의 프롬프트를 찾았습니다.")
+
+
 def add_prompt():
     """새로운 프롬프트를 입력받아 목록에 추가한다."""
     print("\n=== 프롬프트 추가 ===")
@@ -193,7 +223,6 @@ def main():
         show_menu()
         choice = input("선택: ").strip()
 
-
         if choice == "0":
             print("프로그램을 종료합니다.")
             break
@@ -203,13 +232,14 @@ def main():
             show_list()
         elif choice == "3":
             show_by_category()
+        elif choice == "4":
+            search_prompt()
         elif choice in {
-            "4", "5", "6", "7", "8", "9", "10"
+            "5", "6", "7", "8", "9", "10"
         }:
             print("해당 기능은 순차적으로 구현할 예정입니다.")
         else:
             print("올바른 메뉴 번호를 입력해주세요.")
-
 
 
 
