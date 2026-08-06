@@ -248,6 +248,36 @@ def show_detail():
     print("────────────────────────────")
 
 
+def toggle_favorite():
+    """선택한 프롬프트의 즐겨찾기 상태를 변경한다."""
+    print("\n=== 즐겨찾기 관리 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    show_list()
+
+    prompt_index = get_prompt_index()
+
+    if prompt_index is None:
+        return
+
+    prompt = prompts[prompt_index]
+    prompt["favorite"] = not prompt["favorite"]
+
+    if prompt["favorite"]:
+        print(
+            f"\n'{prompt['title']}' 프롬프트를 "
+            "즐겨찾기에 추가했습니다!"
+        )
+    else:
+        print(
+            f"\n'{prompt['title']}' 프롬프트를 "
+            "즐겨찾기에서 해제했습니다!"
+        )
+
+
 def add_prompt():
     """새로운 프롬프트를 입력받아 목록에 추가한다."""
     print("\n=== 프롬프트 추가 ===")
@@ -289,11 +319,12 @@ def main():
             search_prompt()
         elif choice == "5":
             show_detail()
-        elif choice in {"6", "7", "8", "9", "10"}:
+        elif choice == "6":
+            toggle_favorite()
+        elif choice in {"7", "8", "9", "10"}:
             print("해당 기능은 순차적으로 구현할 예정입니다.")
         else:
             print("올바른 메뉴 번호를 입력해주세요.")
-
 
 
 
