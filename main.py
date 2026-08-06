@@ -196,6 +196,58 @@ def search_prompt():
     print(f"\n총 {len(search_results)}개의 프롬프트를 찾았습니다.")
 
 
+def get_prompt_index(message="프롬프트 번호 입력: "):
+    """입력받은 프롬프트 번호를 리스트 인덱스로 반환한다."""
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return None
+
+    choice = input(message).strip()
+
+    if not choice.isdigit():
+        print("올바른 프롬프트 번호를 입력해주세요.")
+        return None
+
+    prompt_index = int(choice) - 1
+
+    if not 0 <= prompt_index < len(prompts):
+        print("존재하지 않는 프롬프트 번호입니다.")
+        return None
+
+    return prompt_index
+
+
+def show_detail():
+    """선택한 프롬프트의 전체 내용과 조회수를 출력한다."""
+    print("\n=== 프롬프트 상세 보기 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    show_list()
+
+    prompt_index = get_prompt_index()
+
+    if prompt_index is None:
+        return
+
+    prompt = prompts[prompt_index]
+    prompt["view_count"] += 1
+
+    favorite_status = "⭐ 즐겨찾기됨" if prompt["favorite"] else "즐겨찾기 아님"
+
+    print("\n────────────────────────────")
+    print(f"제목: {prompt['title']}")
+    print(f"카테고리: {prompt['category']}")
+    print(f"즐겨찾기: {favorite_status}")
+    print(f"조회수: {prompt['view_count']}")
+    print("────────────────────────────")
+    print("내용:")
+    print(prompt["content"])
+    print("────────────────────────────")
+
+
 def add_prompt():
     """새로운 프롬프트를 입력받아 목록에 추가한다."""
     print("\n=== 프롬프트 추가 ===")
@@ -223,6 +275,7 @@ def main():
         show_menu()
         choice = input("선택: ").strip()
 
+
         if choice == "0":
             print("프로그램을 종료합니다.")
             break
@@ -234,12 +287,14 @@ def main():
             show_by_category()
         elif choice == "4":
             search_prompt()
-        elif choice in {
-            "5", "6", "7", "8", "9", "10"
-        }:
+        elif choice == "5":
+            show_detail()
+        elif choice in {"6", "7", "8", "9", "10"}:
             print("해당 기능은 순차적으로 구현할 예정입니다.")
         else:
             print("올바른 메뉴 번호를 입력해주세요.")
+
+
 
 
 
