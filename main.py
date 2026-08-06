@@ -45,6 +45,7 @@ prompts = [
     },
 ]
 
+
 def show_menu():
     """프롬프트 관리 프로그램의 메인 메뉴를 출력한다."""
     print("\n=== 나만의 프롬프트 관리 ===")
@@ -59,23 +60,6 @@ def show_menu():
     print("9. 프롬프트 삭제")
     print("10. 인기 프롬프트")
     print("0. 종료")
-
-def show_list():
-    """저장된 모든 프롬프트를 목록으로 출력한다."""
-    print("\n=== 프롬프트 목록 ===")
-
-    if not prompts:
-        print("등록된 프롬프트가 없습니다.")
-        return
-
-    for index, prompt in enumerate(prompts, start=1):
-        favorite_mark = " ⭐" if prompt["favorite"] else ""
-        print(
-            f"{index}. [{prompt['category']}] "
-            f"{prompt['title']}{favorite_mark}"
-        )
-
-    print(f"\n총 {len(prompts)}개의 프롬프트")
 
 
 def get_non_empty_input(message):
@@ -124,6 +108,66 @@ def get_available_categories():
             available_categories.append(category)
 
     return available_categories
+
+
+def get_prompt_index(message="프롬프트 번호 입력: "):
+    """입력받은 프롬프트 번호를 리스트 인덱스로 반환한다."""
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return None
+
+    choice = input(message).strip()
+
+    if not choice.isdigit():
+        print("올바른 프롬프트 번호를 입력해주세요.")
+        return None
+
+    prompt_index = int(choice) - 1
+
+    if not 0 <= prompt_index < len(prompts):
+        print("존재하지 않는 프롬프트 번호입니다.")
+        return None
+
+    return prompt_index
+
+
+def add_prompt():
+    """새로운 프롬프트를 입력받아 목록에 추가한다."""
+    print("\n=== 프롬프트 추가 ===")
+
+    title = get_non_empty_input("제목: ")
+    content = get_non_empty_input("내용: ")
+    category = select_category()
+
+    new_prompt = {
+        "title": title,
+        "content": content,
+        "category": category,
+        "favorite": False,
+        "view_count": 0,
+    }
+
+    prompts.append(new_prompt)
+
+    print(f"\n'{title}' 프롬프트가 추가되었습니다!")
+
+
+def show_list():
+    """저장된 모든 프롬프트를 목록으로 출력한다."""
+    print("\n=== 프롬프트 목록 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    for index, prompt in enumerate(prompts, start=1):
+        favorite_mark = " ⭐" if prompt["favorite"] else ""
+        print(
+            f"{index}. [{prompt['category']}] "
+            f"{prompt['title']}{favorite_mark}"
+        )
+
+    print(f"\n총 {len(prompts)}개의 프롬프트")
 
 
 def show_by_category():
@@ -196,27 +240,6 @@ def search_prompt():
     print(f"\n총 {len(search_results)}개의 프롬프트를 찾았습니다.")
 
 
-def get_prompt_index(message="프롬프트 번호 입력: "):
-    """입력받은 프롬프트 번호를 리스트 인덱스로 반환한다."""
-    if not prompts:
-        print("등록된 프롬프트가 없습니다.")
-        return None
-
-    choice = input(message).strip()
-
-    if not choice.isdigit():
-        print("올바른 프롬프트 번호를 입력해주세요.")
-        return None
-
-    prompt_index = int(choice) - 1
-
-    if not 0 <= prompt_index < len(prompts):
-        print("존재하지 않는 프롬프트 번호입니다.")
-        return None
-
-    return prompt_index
-
-
 def show_detail():
     """선택한 프롬프트의 전체 내용과 조회수를 출력한다."""
     print("\n=== 프롬프트 상세 보기 ===")
@@ -277,6 +300,7 @@ def toggle_favorite():
             "즐겨찾기에서 해제했습니다!"
         )
 
+
 def show_favorites():
     """즐겨찾기로 등록된 프롬프트만 출력한다."""
     print("\n=== 즐겨찾기 목록 ===")
@@ -298,6 +322,7 @@ def show_favorites():
         )
 
     print(f"\n총 {len(favorite_prompts)}개의 즐겨찾기")
+
 
 def edit_prompt():
     """선택한 프롬프트의 제목, 내용, 카테고리를 수정한다."""
@@ -350,6 +375,7 @@ def edit_prompt():
     else:
         print("\n변경된 내용이 없습니다.")
 
+
 def delete_prompt():
     """선택한 프롬프트를 확인 후 삭제한다."""
     print("\n=== 프롬프트 삭제 ===")
@@ -386,6 +412,7 @@ def delete_prompt():
         "프롬프트가 삭제되었습니다!"
     )
 
+
 def show_popular_prompts():
     """프롬프트를 조회수가 높은 순서로 출력한다."""
     print("\n=== 인기 프롬프트 ===")
@@ -410,26 +437,6 @@ def show_popular_prompts():
         )
 
     print(f"\n총 {len(sorted_prompts)}개의 프롬프트")
-
-def add_prompt():
-    """새로운 프롬프트를 입력받아 목록에 추가한다."""
-    print("\n=== 프롬프트 추가 ===")
-
-    title = get_non_empty_input("제목: ")
-    content = get_non_empty_input("내용: ")
-    category = select_category()
-
-    new_prompt = {
-        "title": title,
-        "content": content,
-        "category": category,
-        "favorite": False,
-        "view_count": 0,
-    }
-
-    prompts.append(new_prompt)
-
-    print(f"\n'{title}' 프롬프트가 추가되었습니다!")
 
 
 def main():
@@ -463,9 +470,6 @@ def main():
             show_popular_prompts()
         else:
             print("올바른 메뉴 번호를 입력해주세요.")
-
-
-
 
 
 if __name__ == "__main__":
