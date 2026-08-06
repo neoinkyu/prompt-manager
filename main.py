@@ -60,6 +60,22 @@ def show_menu():
     print("10. 인기 프롬프트")
     print("0. 종료")
 
+def show_list():
+    """저장된 모든 프롬프트를 목록으로 출력한다."""
+    print("\n=== 프롬프트 목록 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    for index, prompt in enumerate(prompts, start=1):
+        favorite_mark = " ⭐" if prompt["favorite"] else ""
+        print(
+            f"{index}. [{prompt['category']}] "
+            f"{prompt['title']}{favorite_mark}"
+        )
+
+    print(f"\n총 {len(prompts)}개의 프롬프트")
 
 def main():
     """프로그램의 메인 반복문을 실행한다."""
@@ -70,14 +86,18 @@ def main():
         if choice == "0":
             print("프로그램을 종료합니다.")
             break
-
-        if choice in {
-            "1", "2", "3", "4", "5",
+        elif choice == "2":
+            show_list()
+        elif choice in {
+            "1", "3", "4", "5",
             "6", "7", "8", "9", "10"
         }:
             print("해당 기능은 순차적으로 구현할 예정입니다.")
         else:
             print("올바른 메뉴 번호를 입력해주세요.")
+
+
+
 
 
 if __name__ == "__main__":
