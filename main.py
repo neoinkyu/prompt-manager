@@ -386,6 +386,31 @@ def delete_prompt():
         "프롬프트가 삭제되었습니다!"
     )
 
+def show_popular_prompts():
+    """프롬프트를 조회수가 높은 순서로 출력한다."""
+    print("\n=== 인기 프롬프트 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    sorted_prompts = sorted(
+        prompts,
+        key=lambda prompt: prompt["view_count"],
+        reverse=True,
+    )
+
+    for rank, prompt in enumerate(sorted_prompts, start=1):
+        favorite_mark = " ⭐" if prompt["favorite"] else ""
+
+        print(
+            f"{rank}. [{prompt['category']}] "
+            f"{prompt['title']}{favorite_mark} "
+            f"- 조회수 {prompt['view_count']}회"
+        )
+
+    print(f"\n총 {len(sorted_prompts)}개의 프롬프트")
+
 def add_prompt():
     """새로운 프롬프트를 입력받아 목록에 추가한다."""
     print("\n=== 프롬프트 추가 ===")
@@ -435,9 +460,10 @@ def main():
         elif choice == "9":
             delete_prompt()
         elif choice == "10":
-            print("해당 기능은 순차적으로 구현할 예정입니다.")
+            show_popular_prompts()
         else:
             print("올바른 메뉴 번호를 입력해주세요.")
+
 
 
 
