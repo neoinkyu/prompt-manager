@@ -113,6 +113,59 @@ def select_category():
         print("올바른 카테고리 번호를 입력해주세요.")
 
 
+def get_available_categories():
+    """기본 카테고리와 현재 프롬프트의 카테고리를 반환한다."""
+    available_categories = CATEGORIES.copy()
+
+    for prompt in prompts:
+        category = prompt["category"]
+
+        if category not in available_categories:
+            available_categories.append(category)
+
+    return available_categories
+
+
+def show_by_category():
+    """선택한 카테고리에 해당하는 프롬프트를 출력한다."""
+    print("\n=== 카테고리별 조회 ===")
+
+    categories = get_available_categories()
+
+    for index, category in enumerate(categories, start=1):
+        print(f"{index}) {category}")
+
+    while True:
+        choice = input("선택: ").strip()
+
+        if choice.isdigit():
+            category_index = int(choice) - 1
+
+            if 0 <= category_index < len(categories):
+                selected_category = categories[category_index]
+                break
+
+        print("올바른 카테고리 번호를 입력해주세요.")
+
+    filtered_prompts = [
+        prompt
+        for prompt in prompts
+        if prompt["category"] == selected_category
+    ]
+
+    print(f"\n[{selected_category}] 카테고리 프롬프트:")
+
+    if not filtered_prompts:
+        print("해당 카테고리에 등록된 프롬프트가 없습니다.")
+        return
+
+    for index, prompt in enumerate(filtered_prompts, start=1):
+        favorite_mark = " ⭐" if prompt["favorite"] else ""
+        print(f"{index}. {prompt['title']}{favorite_mark}")
+
+    print(f"\n총 {len(filtered_prompts)}개의 프롬프트")
+
+
 def add_prompt():
     """새로운 프롬프트를 입력받아 목록에 추가한다."""
     print("\n=== 프롬프트 추가 ===")
@@ -148,9 +201,10 @@ def main():
             add_prompt()
         elif choice == "2":
             show_list()
+        elif choice == "3":
+            show_by_category()
         elif choice in {
-            "3", "4", "5",
-            "6", "7", "8", "9", "10"
+            "4", "5", "6", "7", "8", "9", "10"
         }:
             print("해당 기능은 순차적으로 구현할 예정입니다.")
         else:
