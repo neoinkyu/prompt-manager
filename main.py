@@ -299,6 +299,57 @@ def show_favorites():
 
     print(f"\n총 {len(favorite_prompts)}개의 즐겨찾기")
 
+def edit_prompt():
+    """선택한 프롬프트의 제목, 내용, 카테고리를 수정한다."""
+    print("\n=== 프롬프트 수정 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    show_list()
+
+    prompt_index = get_prompt_index()
+
+    if prompt_index is None:
+        return
+
+    prompt = prompts[prompt_index]
+
+    print("\n현재 프롬프트 정보")
+    print(f"제목: {prompt['title']}")
+    print(f"카테고리: {prompt['category']}")
+    print("내용:")
+    print(prompt["content"])
+
+    print("\n변경하지 않을 항목은 Enter만 누르세요.")
+
+    new_title = input("새 제목: ").strip()
+    new_content = input("새 내용: ").strip()
+
+    change_category = input(
+        "카테고리를 변경하시겠습니까? (y/N): "
+    ).strip().lower()
+
+    changed = False
+
+    if new_title:
+        prompt["title"] = new_title
+        changed = True
+
+    if new_content:
+        prompt["content"] = new_content
+        changed = True
+
+    if change_category == "y":
+        prompt["category"] = select_category()
+        changed = True
+
+    if changed:
+        print(f"\n'{prompt['title']}' 프롬프트가 수정되었습니다!")
+    else:
+        print("\n변경된 내용이 없습니다.")
+
 def add_prompt():
     """새로운 프롬프트를 입력받아 목록에 추가한다."""
     print("\n=== 프롬프트 추가 ===")
@@ -326,6 +377,7 @@ def main():
         show_menu()
         choice = input("선택: ").strip()
 
+
         if choice == "0":
             print("프로그램을 종료합니다.")
             break
@@ -343,11 +395,12 @@ def main():
             toggle_favorite()
         elif choice == "7":
             show_favorites()
-        elif choice in {"8", "9", "10"}:
+        elif choice == "8":
+            edit_prompt()
+        elif choice in {"9", "10"}:
             print("해당 기능은 순차적으로 구현할 예정입니다.")
         else:
             print("올바른 메뉴 번호를 입력해주세요.")
-
 
 
 
