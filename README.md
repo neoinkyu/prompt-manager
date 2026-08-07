@@ -246,4 +246,4 @@ prompt-manager/
 
 ## 12. 저장소 주소
 
-https://github.com/neoinkyu/prompt-manager
+https://github.com/neoinkyu/A1-1
