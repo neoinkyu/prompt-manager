@@ -53,7 +53,7 @@ Python 3.10 이상에서 실행할 수 있으며, 외부 라이브러리는 사�
 ### 1) 저장소 복제
 
 ```bash
-git clone https://github.com/neoinkyu/prompt-manager.git
+git clone https://github.com/neoinkyu/A1-1.git
 ```
 
 ### 2) 프로젝트 폴더로 이동
